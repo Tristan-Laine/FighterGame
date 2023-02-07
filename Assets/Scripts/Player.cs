@@ -31,6 +31,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private string target;
 
+    [SerializeField] private bool controller;
+
     [SerializeField] private CapsuleCollider2D boxCollider2D;
 
     // Variables
@@ -42,8 +44,6 @@ public class Player : MonoBehaviour
     private bool attacked = false;
     private BoxCollider2D fistCollider;
     private float attackedDelay = 0.3f;
-    
-    ContactFilter2D filter = new ContactFilter2D().NoFilter();
 
 
     // Start is called before the first frame update
@@ -56,42 +56,63 @@ public class Player : MonoBehaviour
     void Update()
     {
 
-        // Left-Right Movement
-        if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow) && !punching)
+        // Player 1 Movement
+        //if (transform.CompareTag("Player1") || transform.CompareTag("Player2"))
+        if(!controller)
         {
-            GoLeft();
+            // Left-Right Movement
+            if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow) && !punching)
+            {
+                GoLeft();
+            }
+            else if (Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.LeftArrow) && !punching)
+            {
+                GoRight();
+            }
+        
+
+            // Jump Movement
+            if (Input.GetKeyDown(KeyCode.Space) && rb.velocity.y == 0 && !punching)
+            {
+                rb.AddForce(Vector2.up * jumpAmount, ForceMode2D.Impulse);
+            }
+        
+            // Punch Movement
+            if (Input.GetKeyDown(KeyCode.F) && canPunch && !punching)
+            {
+                punching = true;
+                // Punch Sprite
+                if (flipped)
+                {
+                    fist.transform.Translate(-punchDistance, 0, 0);
+                }
+                else
+                {
+                    fist.transform.Translate(punchDistance, 0, 0);
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.C) && rb.velocity.y == 0 && canPunch)
+            {
+                // Crouch Sprite
+            }
         }
-        else if (Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.LeftArrow) && !punching)
+        // Player 2 Movements
+        else if(transform.CompareTag("Player"))
         {
-            GoRight();
+            // Left-Right Movement
+            if ((Input.GetAxis("HorizontalPlayer2") != 0 ) && !punching)
+            {
+                transform.Translate(Vector2.right * Input.GetAxis("HorizontalPlayer2") * playerSpeed * Time.deltaTime);
+            }
+
+            // Jump Movement
+            if (Input.GetButtonDown("JumpPlayer2") && rb.velocity.y == 0 && !punching)
+            {
+                rb.AddForce(Vector2.up * jumpAmount, ForceMode2D.Impulse);
+            }
         }
 
-        // Jump Movement
-        if (Input.GetKeyDown(KeyCode.Space) && rb.velocity.y == 0 && !punching)
-        {
-            rb.AddForce(Vector2.up * jumpAmount, ForceMode2D.Impulse);
-        }
-        
-        // Punch Movement
-        if (Input.GetKeyDown(KeyCode.F) && canPunch && !punching)
-        {
-            punching = true;
-            // Punch Sprite
-            if (flipped)
-            {
-                fist.transform.Translate(-punchDistance, 0, 0);
-            }
-            else
-            {
-                fist.transform.Translate(punchDistance, 0, 0);
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.C) && rb.velocity.y == 0 && canPunch)
-        {
-            // Crouch Sprite
-        }
-        
 
         // Punching
         if (punching)
