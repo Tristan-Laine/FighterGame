@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -21,10 +23,15 @@ public class Player : MonoBehaviour
     private float punchDelay = 0.6f;
 
     [SerializeField]
-    private float lifePoints = 20f;
+    private float lifePoints = 100f;
     
     [SerializeField]
     private SpriteRenderer spriteRenderer;
+    
+    [SerializeField]
+    private string target;
+
+    [SerializeField] private CapsuleCollider2D boxCollider2D;
 
     // Variables
     private GameObject fist;
@@ -32,16 +39,23 @@ public class Player : MonoBehaviour
     private bool punching = false;
     private bool canPunch = true;
     private bool flipped = false;
-
+    private bool attacked = false;
+    private BoxCollider2D fistCollider;
+    private float attackedDelay = 0.3f;
     
+    ContactFilter2D filter = new ContactFilter2D().NoFilter();
+
+
     // Start is called before the first frame update
     void Start()
     {
         fist = gameObject.transform.GetChild(0).gameObject;
+        fistCollider = fist.GetComponent<BoxCollider2D>();
     }
     
     void Update()
     {
+
         // Left-Right Movement
         if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow) && !punching)
         {
@@ -59,8 +73,9 @@ public class Player : MonoBehaviour
         }
         
         // Punch Movement
-        if (Input.GetKeyDown(KeyCode.F) && canPunch)
+        if (Input.GetKeyDown(KeyCode.F) && canPunch && !punching)
         {
+            punching = true;
             // Punch Sprite
             if (flipped)
             {
@@ -70,13 +85,13 @@ public class Player : MonoBehaviour
             {
                 fist.transform.Translate(punchDistance, 0, 0);
             }
-            punching = true;
         }
 
         if (Input.GetKeyDown(KeyCode.C) && rb.velocity.y == 0 && canPunch)
         {
             // Crouch Sprite
         }
+        
 
         // Punching
         if (punching)
@@ -101,6 +116,7 @@ public class Player : MonoBehaviour
                 // init delay after punch
                 canPunch = false;
             }
+
         }
         else
         {
@@ -111,7 +127,17 @@ public class Player : MonoBehaviour
                 punchDelay = 0.6f;
             }
         }
+        if (attacked)
+        {
+            attackedDelay -= Time.deltaTime;
+            if (attackedDelay <= 0)
+            {
+                attacked = false;
+                attackedDelay = 0.3f;
+            }   
+        }
     }
+
     void GoLeft()
     {
         // If facing right
@@ -137,4 +163,29 @@ public class Player : MonoBehaviour
         }
         transform.Translate(playerSpeed * Time.deltaTime, 0, 0);
     }
+
+    public void lostPV(float attack)
+    {
+        if (!attacked)
+        {
+            lifePoints -= attack;
+            attacked = true;
+        }
+    }
+
+    public float getLifePoints()
+    {
+        return lifePoints;
+    }
+
+    public bool isPunching()
+    {
+        return punching;
+    }
+
+    public string getTarget()
+    {
+        return target;
+    }
+
 }
