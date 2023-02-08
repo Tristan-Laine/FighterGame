@@ -1,14 +1,14 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour{
+    
+    public GameObject settingsWindow;
 
-public string gameToLoad;
-
-public GameObject settingsWindow;
-
+    [SerializeField] private string[] gameScenes;
     public void StartGame(){
-        SceneManager.LoadScene(gameToLoad);
+        SceneManager.LoadScene(gameScenes[Random.Range(0, gameScenes.Length)]);
     }
 
     public void SettingsButton(){
