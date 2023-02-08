@@ -46,6 +46,7 @@ public class Player : MonoBehaviour
     private bool attacked = false;
     private BoxCollider2D fistCollider;
     private float attackedDelay = 0.3f;
+    private string controllerType = "ControllerSwitch";
 
 
     // Start is called before the first frame update
@@ -71,34 +72,17 @@ public class Player : MonoBehaviour
             {
                 GoRight();
             }
-        
-
+            
             // Jump Movement
             if (Input.GetKeyDown(KeyCode.Space) && rb.velocity.y == 0 && !punching)
             {
-                rb.AddForce(Vector2.up * jumpAmount, ForceMode2D.Impulse);
-                animator.SetBool("InAir", true);
+                Jump();
             }
 
-            if (rb.velocity.y ==0 && animator.GetBool("InAir"))
-            {
-                animator.SetBool("InAir", false);
-            }
-        
             // Punch Movement
             if (Input.GetKeyDown(KeyCode.F) && canPunch && !punching)
             {
-                punching = true;
-                animator.SetTrigger("test");
-                // Punch Sprite
-                if (flipped)
-                {
-                    fist.transform.Translate(-punchDistance, 0, 0);
-                }
-                else
-                {
-                    fist.transform.Translate(punchDistance, 0, 0);
-                }
+                Punch();
             }
 
             if (Input.GetKeyDown(KeyCode.C) && rb.velocity.y == 0 && canPunch)
@@ -107,22 +91,39 @@ public class Player : MonoBehaviour
             }
         }
         // Player 2 Movements
-        else if(transform.CompareTag("Player"))
+        else
         {
+            float horizontalAxis = Input.GetAxis("Horizontal" + controllerType);
+            
             // Left-Right Movement
-            if ((Input.GetAxis("HorizontalPlayer2") != 0 ) && !punching)
+            if ((horizontalAxis != 0 ) && !punching)
             {
-                transform.Translate(Vector2.right * Input.GetAxis("HorizontalPlayer2") * playerSpeed * Time.deltaTime);
+                if (Input.GetAxis("Horizontal" + controllerType) < 0)
+                {
+                    GoLeft();
+                }
+                else if (horizontalAxis > 0)
+                {
+                    GoRight();
+                }
             }
 
             // Jump Movement
-            if (Input.GetButtonDown("JumpPlayer2") && rb.velocity.y == 0 && !punching)
+            if (Input.GetButtonDown("Jump"+controllerType) && rb.velocity.y == 0 && !punching)
             {
-                rb.AddForce(Vector2.up * jumpAmount, ForceMode2D.Impulse);
+                Jump();
+            }
+            
+            //Punch
+            if (Input.GetButtonDown("Punch" + controllerType))
+            {
+                Punch();
             }
         }
-
-
+        if (rb.velocity.y ==0 && animator.GetBool("InAir"))
+        {
+            animator.SetBool("InAir", false);
+        }
         // Punching
         if (punching)
         {
@@ -167,6 +168,26 @@ public class Player : MonoBehaviour
                 attackedDelay = 0.3f;
             }   
         }
+    }
+
+    void Punch()
+    {
+        punching = true;
+        animator.SetTrigger("test");
+        // Punch Sprite
+        if (flipped)
+        {
+            fist.transform.Translate(-punchDistance, 0, 0);
+        }
+        else
+        {
+            fist.transform.Translate(punchDistance, 0, 0);
+        }
+    }
+    void Jump()
+    {
+        rb.AddForce(Vector2.up * jumpAmount, ForceMode2D.Impulse);
+        animator.SetBool("InAir", true);
     }
 
     void GoLeft()
