@@ -8,6 +8,7 @@ TagManager:
   - Player2
   - endGameUI
   - GameUI
+  - AudioPlayer
   layers:
   - Default
   - TransparentFX
