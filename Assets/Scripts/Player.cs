@@ -191,6 +191,11 @@ public class Player : MonoBehaviour
         {
             lifePoints -= attack;
             attacked = true;
+
+            if (lifePoints == 0)
+            {
+                GameObject.FindGameObjectWithTag("GameUI").GetComponent<GameScript>().GameEnded(gameObject);
+            }
         }
     }
 
