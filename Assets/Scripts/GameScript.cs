@@ -13,11 +13,14 @@ public class GameScript: MonoBehaviour
     private float second = 1f;
     private TextMeshProUGUI timerText;
     private GameObject endTextGameObject;
+    private bool gameEnded;
+    private GameObject audioPlayer;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        audioPlayer = GameObject.FindGameObjectWithTag("AudioPlayer");
         timerText = timerObject.GetComponent<TextMeshProUGUI>();
         endTextGameObject = endGameUI.transform.GetChild(0).gameObject;
     }
@@ -27,7 +30,7 @@ public class GameScript: MonoBehaviour
     {
         
         // Fin de partie
-        if (time > 0)
+        if (time > 0 && !gameEnded)
         {
             second -= Time.deltaTime;
             if (second <= 0)
@@ -37,7 +40,7 @@ public class GameScript: MonoBehaviour
                 second = 1;
             }
         }
-        else
+        else if(time <= 0)
         {
             GameEnded(null);
         }
@@ -45,6 +48,7 @@ public class GameScript: MonoBehaviour
 
     public void GameEnded([CanBeNull] GameObject loser)
     {
+        gameEnded = true;
         TextMeshProUGUI endText = endTextGameObject.GetComponent<TextMeshProUGUI>();
         if (loser)
         {
@@ -55,6 +59,8 @@ public class GameScript: MonoBehaviour
         {
             endText.text = "Egalité";
         }
+
+        audioPlayer.GetComponent<AudioManager>().gameEnded();
         endGameUI.SetActive(true);
     }
 }

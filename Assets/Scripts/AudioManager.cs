@@ -4,20 +4,17 @@ public class AudioManager : MonoBehaviour
 {
     public AudioClip[] playlist;
     public AudioSource audioSource;
+    public AudioClip gameOver;
 
     // Start is called before the first frame update
     void Start()
     {
-        audioSource.clip = playlist[0];
+        audioSource.clip = playlist[Random.Range(0, playlist.Length)];
         audioSource.Play();
     }
-
-    // Update is called once per frame
-    void Update()
+    public void gameEnded()
     {
-        if(!audioSource.isPlaying){
-                audioSource.clip = playlist[0];
-                audioSource.Play();
-        }
+        audioSource.clip = gameOver;
+        audioSource.Play();
     }
 }
