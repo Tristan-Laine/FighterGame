@@ -77,6 +77,12 @@ public class Player : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space) && rb.velocity.y == 0 && !punching)
             {
                 rb.AddForce(Vector2.up * jumpAmount, ForceMode2D.Impulse);
+                animator.SetBool("InAir", true);
+            }
+
+            if (rb.velocity.y ==0 && animator.GetBool("InAir"))
+            {
+                animator.SetBool("InAir", false);
             }
         
             // Punch Movement
