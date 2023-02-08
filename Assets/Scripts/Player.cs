@@ -34,6 +34,8 @@ public class Player : MonoBehaviour
     [SerializeField] private bool controller;
 
     [SerializeField] private CapsuleCollider2D boxCollider2D;
+    
+    [SerializeField] private Animator animator;
 
     // Variables
     private GameObject fist;
@@ -81,6 +83,7 @@ public class Player : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.F) && canPunch && !punching)
             {
                 punching = true;
+                animator.SetTrigger("test");
                 // Punch Sprite
                 if (flipped)
                 {
@@ -133,7 +136,8 @@ public class Player : MonoBehaviour
                 
                 fistCooldown = 0.3f;
                 punching = false;
-                
+
+
                 // init delay after punch
                 canPunch = false;
             }
