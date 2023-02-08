@@ -109,7 +109,7 @@ public class Player : MonoBehaviour
             }
 
             // Jump Movement
-            if (Input.GetButtonDown("Jump"+controllerType) && rb.velocity.y == 0 && !punching)
+            if ((Input.GetAxis("Jump"+controllerType)<0) && rb.velocity.y == 0 && !punching)
             {
                 Jump();
             }
