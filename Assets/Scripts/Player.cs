@@ -115,7 +115,7 @@ public class Player : MonoBehaviour
             }
             
             //Punch
-            if (Input.GetButtonDown("Punch" + controllerType))
+            if (Input.GetButtonDown("Punch" + controllerType) && canPunch && !punching)
             {
                 Punch();
             }
@@ -140,7 +140,6 @@ public class Player : MonoBehaviour
                     fist.transform.Translate(-punchDistance, 0, 0);
                 }
 
-                
                 fistCooldown = 0.3f;
                 punching = false;
 
