@@ -8,7 +8,7 @@ public class PauseMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetButtonDown("StartControllerSwitch")){
+        if(Input.GetButtonDown("StartControllerSwitch") || Input.GetKeyDown(KeyCode.Escape)){
             if(gameIsPaused){
                 Resume();
             }else

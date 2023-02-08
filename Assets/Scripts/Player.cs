@@ -58,6 +58,10 @@ public class Player : MonoBehaviour
     
     void Update()
     {
+        if (rb.velocity.x == 0)
+        {
+            animator.SetBool("Moving", false);
+        }
 
         // Player 1 Movement
         //if (transform.CompareTag("Player1") || transform.CompareTag("Player2"))
@@ -197,6 +201,10 @@ public class Player : MonoBehaviour
             FlipPlayer();
         }
         transform.Translate(- (playerSpeed * Time.deltaTime), 0, 0);
+        if (rb.velocity.y == 0)
+        {
+            animator.SetBool("Moving", true);
+        }
     }
 
     void FlipPlayer()
@@ -213,6 +221,11 @@ public class Player : MonoBehaviour
             FlipPlayer();
         }
         transform.Translate(playerSpeed * Time.deltaTime, 0, 0);
+        if (rb.velocity.y == 0)
+        {
+            animator.SetBool("Moving", true);
+        }
+
     }
 
     public void lostPV(float attack)
