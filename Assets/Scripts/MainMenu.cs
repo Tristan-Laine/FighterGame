@@ -5,10 +5,9 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour{
     
     public GameObject settingsWindow;
-
-    [SerializeField] private string[] gameScenes;
+    
     public void StartGame(){
-        SceneManager.LoadScene(gameScenes[Random.Range(0, gameScenes.Length)]);
+        SceneManager.LoadScene(3);
     }
 
     public void SettingsButton(){

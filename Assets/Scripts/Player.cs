@@ -36,6 +36,8 @@ public class Player : MonoBehaviour
     [SerializeField] private CapsuleCollider2D boxCollider2D;
     
     [SerializeField] private Animator animator;
+    
+    public CharacterDatabase characterDB;
 
     // Variables
     private GameObject fist;
@@ -54,6 +56,15 @@ public class Player : MonoBehaviour
     {
         fist = gameObject.transform.GetChild(0).gameObject;
         fistCollider = fist.GetComponent<BoxCollider2D>();
+        
+        if (gameObject.CompareTag("Player1"))
+        {
+            Load("1");
+        }
+        else
+        {
+            Load("2");
+        }
     }
     
     void Update()
@@ -255,6 +266,18 @@ public class Player : MonoBehaviour
     public string getTarget()
     {
         return target;
+    }
+    
+    private void UpdateCharacter(int selectedOption)
+    {
+        Character character = characterDB.GetCharacter(selectedOption);
+        spriteRenderer.sprite = character.characterSprite;
+    }
+
+    private void Load(string player)
+    {
+        int selectedOption = PlayerPrefs.GetInt("selectedOption"+player);
+        UpdateCharacter(selectedOption);
     }
 
 }
