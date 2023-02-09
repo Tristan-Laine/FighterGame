@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -16,17 +17,26 @@ public class PauseMenu : MonoBehaviour
                 Paused();
             }
         }
+        if(gameIsPaused){
+            if(Input.GetButtonDown("SelectControllerSwitch")){
+                LoadMainMenu();
+            }
+        }
     }
 
-    void Paused(){
+    public void Paused(){
         pauseMenuUI.SetActive(true);
         Time.timeScale = 0;
         gameIsPaused = true;
     }
 
-    void Resume(){
+    public void Resume(){
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1;
         gameIsPaused = false;
+    }
+
+    public void LoadMainMenu(){
+        SceneManager.LoadScene(0);
     }
 }
