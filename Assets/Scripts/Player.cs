@@ -36,6 +36,9 @@ public class Player : MonoBehaviour
     [SerializeField] private CapsuleCollider2D boxCollider2D;
     
     [SerializeField] private Animator animator;
+    
+    public CharacterDatabase characterDB;
+    public RuntimeAnimatorController[] controllers;
 
     // Variables
     private GameObject fist;
@@ -46,6 +49,7 @@ public class Player : MonoBehaviour
     private bool attacked = false;
     private BoxCollider2D fistCollider;
     private float attackedDelay = 0.3f;
+    private string controllerType = "ControllerSwitch";
 
 
     // Start is called before the first frame update
@@ -53,10 +57,23 @@ public class Player : MonoBehaviour
     {
         fist = gameObject.transform.GetChild(0).gameObject;
         fistCollider = fist.GetComponent<BoxCollider2D>();
+        
+        if (gameObject.name == "Player 1")
+        {
+            Load("1");
+        }
+        else
+        {
+            Load("2");
+        }
     }
     
     void Update()
     {
+        if (rb.velocity.x == 0)
+        {
+            animator.SetBool("Moving", false);
+        }
 
         // Player 1 Movement
         //if (transform.CompareTag("Player1") || transform.CompareTag("Player2"))
@@ -71,34 +88,17 @@ public class Player : MonoBehaviour
             {
                 GoRight();
             }
-        
-
+            
             // Jump Movement
             if (Input.GetKeyDown(KeyCode.Space) && rb.velocity.y == 0 && !punching)
             {
-                rb.AddForce(Vector2.up * jumpAmount, ForceMode2D.Impulse);
-                animator.SetBool("InAir", true);
+                Jump();
             }
 
-            if (rb.velocity.y ==0 && animator.GetBool("InAir"))
-            {
-                animator.SetBool("InAir", false);
-            }
-        
             // Punch Movement
             if (Input.GetKeyDown(KeyCode.F) && canPunch && !punching)
             {
-                punching = true;
-                animator.SetTrigger("test");
-                // Punch Sprite
-                if (flipped)
-                {
-                    fist.transform.Translate(-punchDistance, 0, 0);
-                }
-                else
-                {
-                    fist.transform.Translate(punchDistance, 0, 0);
-                }
+                Punch();
             }
 
             if (Input.GetKeyDown(KeyCode.C) && rb.velocity.y == 0 && canPunch)
@@ -107,22 +107,39 @@ public class Player : MonoBehaviour
             }
         }
         // Player 2 Movements
-        else if(transform.CompareTag("Player"))
+        else
         {
+            float horizontalAxis = Input.GetAxis("Horizontal" + controllerType);
+            
             // Left-Right Movement
-            if ((Input.GetAxis("HorizontalPlayer2") != 0 ) && !punching)
+            if ((horizontalAxis != 0 ) && !punching)
             {
-                transform.Translate(Vector2.right * Input.GetAxis("HorizontalPlayer2") * playerSpeed * Time.deltaTime);
+                if (Input.GetAxis("Horizontal" + controllerType) < 0)
+                {
+                    GoLeft();
+                }
+                else if (horizontalAxis > 0)
+                {
+                    GoRight();
+                }
             }
 
             // Jump Movement
-            if (Input.GetButtonDown("JumpPlayer2") && rb.velocity.y == 0 && !punching)
+            if ((Input.GetAxis("Jump"+controllerType)<0) && rb.velocity.y == 0 && !punching)
             {
-                rb.AddForce(Vector2.up * jumpAmount, ForceMode2D.Impulse);
+                Jump();
+            }
+            
+            //Punch
+            if (Input.GetButtonDown("Punch" + controllerType) && canPunch && !punching)
+            {
+                Punch();
             }
         }
-
-
+        if (rb.velocity.y ==0 && animator.GetBool("InAir"))
+        {
+            animator.SetBool("InAir", false);
+        }
         // Punching
         if (punching)
         {
@@ -139,7 +156,6 @@ public class Player : MonoBehaviour
                     fist.transform.Translate(-punchDistance, 0, 0);
                 }
 
-                
                 fistCooldown = 0.3f;
                 punching = false;
 
@@ -169,6 +185,26 @@ public class Player : MonoBehaviour
         }
     }
 
+    void Punch()
+    {
+        punching = true;
+        animator.SetTrigger("test");
+        // Punch Sprite
+        if (flipped)
+        {
+            fist.transform.Translate(-punchDistance, 0, 0);
+        }
+        else
+        {
+            fist.transform.Translate(punchDistance, 0, 0);
+        }
+    }
+    void Jump()
+    {
+        rb.AddForce(Vector2.up * jumpAmount, ForceMode2D.Impulse);
+        animator.SetBool("InAir", true);
+    }
+
     void GoLeft()
     {
         // If facing right
@@ -177,6 +213,10 @@ public class Player : MonoBehaviour
             FlipPlayer();
         }
         transform.Translate(- (playerSpeed * Time.deltaTime), 0, 0);
+        if (rb.velocity.y == 0)
+        {
+            animator.SetBool("Moving", true);
+        }
     }
 
     void FlipPlayer()
@@ -193,6 +233,11 @@ public class Player : MonoBehaviour
             FlipPlayer();
         }
         transform.Translate(playerSpeed * Time.deltaTime, 0, 0);
+        if (rb.velocity.y == 0)
+        {
+            animator.SetBool("Moving", true);
+        }
+
     }
 
     public void lostPV(float attack)
@@ -222,6 +267,18 @@ public class Player : MonoBehaviour
     public string getTarget()
     {
         return target;
+    }
+    
+    private void UpdateCharacter(int selectedOption)
+    {
+        animator.runtimeAnimatorController = controllers[selectedOption];
+    }
+
+    private void Load(string player)
+    {
+        int selectedOption = PlayerPrefs.GetInt("selectedOption"+player);
+        UpdateCharacter(selectedOption);
+
     }
 
 }
