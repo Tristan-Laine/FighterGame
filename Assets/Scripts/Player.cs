@@ -29,6 +29,12 @@ public class Player : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     
     [SerializeField]
+    private AudioSource punchAudioSource;
+    
+    [SerializeField]
+    private AudioSource jumpAudioSource;
+    
+    [SerializeField]
     private string target;
 
     [SerializeField] private bool controller;
@@ -187,6 +193,7 @@ public class Player : MonoBehaviour
 
     void Punch()
     {
+        punchAudioSource.Play();
         punching = true;
         animator.SetTrigger("test");
         // Punch Sprite
@@ -203,6 +210,7 @@ public class Player : MonoBehaviour
     {
         rb.AddForce(Vector2.up * jumpAmount, ForceMode2D.Impulse);
         animator.SetBool("InAir", true);
+        jumpAudioSource.Play();
     }
 
     void GoLeft()
