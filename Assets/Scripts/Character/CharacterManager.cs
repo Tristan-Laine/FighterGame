@@ -31,6 +31,7 @@ public class CharacterManager : MonoBehaviour
             Load();
         }
         UpdateCharacter(selectedOption);
+        Save();
     }
 
     public void NextOption()
@@ -69,6 +70,7 @@ public class CharacterManager : MonoBehaviour
     private void Save()
     {
         PlayerPrefs.SetInt("selectedOption"+player, selectedOption);
+        PlayerPrefs.Save();
     }
 
     public void changeScene()

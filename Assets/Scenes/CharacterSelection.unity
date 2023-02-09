@@ -241,7 +241,8 @@ MonoBehaviour:
   nameText: {fileID: 1839342633}
   artworkSprite: {fileID: 234848998}
   player: 2
-  gameScenes: []
+  gameScenes:
+  - Arena_Test
 --- !u!212 &234848998
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -736,7 +737,7 @@ MonoBehaviour:
       - m_Target: {fileID: 907065860}
         m_TargetAssemblyTypeName: CharacterManager, Assembly-CSharp
         m_MethodName: changeScene
-        m_Mode: 3
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

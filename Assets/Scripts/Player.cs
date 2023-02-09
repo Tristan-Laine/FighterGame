@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Animations;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -38,6 +39,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Animator animator;
     
     public CharacterDatabase characterDB;
+    public AnimatorController[] controllers;
 
     // Variables
     private GameObject fist;
@@ -57,7 +59,7 @@ public class Player : MonoBehaviour
         fist = gameObject.transform.GetChild(0).gameObject;
         fistCollider = fist.GetComponent<BoxCollider2D>();
         
-        if (gameObject.CompareTag("Player1"))
+        if (gameObject.name == "Player 1")
         {
             Load("1");
         }
@@ -270,14 +272,14 @@ public class Player : MonoBehaviour
     
     private void UpdateCharacter(int selectedOption)
     {
-        Character character = characterDB.GetCharacter(selectedOption);
-        spriteRenderer.sprite = character.characterSprite;
+        animator.runtimeAnimatorController = controllers[selectedOption];
     }
 
     private void Load(string player)
     {
         int selectedOption = PlayerPrefs.GetInt("selectedOption"+player);
         UpdateCharacter(selectedOption);
+
     }
 
 }
