@@ -2067,6 +2067,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   backgrounds:
   - {fileID: 21300000, guid: f9fe400de1f784c978e584bb56b7dcf2, type: 3}
+  - {fileID: 21300000, guid: d70ada9518b7e428494f063e1975c01e, type: 3}
+  - {fileID: 21300000, guid: 881a69e33137641cbaf7b3da811a20a8, type: 3}
   sr: {fileID: 1065659646}
 --- !u!1 &1139914364
 GameObject:
@@ -3349,8 +3351,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 135765402812397072, guid: 86d3cb173231b4edcb4dcf73c46dc2f5, type: 3}
+      propertyPath: m_LinearDrag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 135765402812397072, guid: 86d3cb173231b4edcb4dcf73c46dc2f5, type: 3}
       propertyPath: m_GravityScale
-      value: 1.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 135765402812397073, guid: 86d3cb173231b4edcb4dcf73c46dc2f5, type: 3}
       propertyPath: controller
@@ -3358,7 +3364,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 135765402812397073, guid: 86d3cb173231b4edcb4dcf73c46dc2f5, type: 3}
       propertyPath: jumpAmount
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 135765402812397075, guid: 86d3cb173231b4edcb4dcf73c46dc2f5, type: 3}
       propertyPath: m_RootOrder
@@ -3404,6 +3410,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 135765402812397086, guid: 86d3cb173231b4edcb4dcf73c46dc2f5, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 135765403409139015, guid: 86d3cb173231b4edcb4dcf73c46dc2f5, type: 3}
       propertyPath: m_Name
       value: Player 2
@@ -3417,13 +3427,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6468047783156339474, guid: 88261838eef87477ea44e7bb1614cd91, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6468047783156339484, guid: 88261838eef87477ea44e7bb1614cd91, type: 3}
+      propertyPath: m_LinearDrag
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6468047783156339484, guid: 88261838eef87477ea44e7bb1614cd91, type: 3}
       propertyPath: m_GravityScale
-      value: 1.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6468047783156339485, guid: 88261838eef87477ea44e7bb1614cd91, type: 3}
       propertyPath: jumpAmount
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 6468047783156339485, guid: 88261838eef87477ea44e7bb1614cd91, type: 3}
       propertyPath: jumpAudioSource
